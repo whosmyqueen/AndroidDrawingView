@@ -9,13 +9,14 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.contextholder.ContextHolder;
 import com.vilyever.drawingview.R;
@@ -65,8 +66,10 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
     }
 
     /* Public Methods */
+
     /**
      * 进入编辑状态
+     *
      * @param firstEditing 是否第一次编辑，即图层刚刚被创建完成时
      */
     public void beginEdit(boolean firstEditing) {
@@ -101,6 +104,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
 
     /**
      * 当前步骤是否改变了text内容
+     *
      * @return 是否改变
      */
     public boolean isChangedSinceLastStep() {
@@ -111,16 +115,20 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
     public interface TextChangeDelegate {
         /**
          * 实时监测text变化
+         *
          * @param textView 此view
-         * @param text 变化后的text
+         * @param text     变化后的text
          */
         void onTextChange(DrawingLayerTextView textView, String text);
     }
+
     private TextChangeDelegate textChangeDelegate;
+
     public DrawingLayerTextView setTextChangeDelegate(TextChangeDelegate textChangeDelegate) {
         this.textChangeDelegate = textChangeDelegate;
         return this;
     }
+
     public TextChangeDelegate getTextChangeDelegate() {
         if (this.textChangeDelegate == null) {
             this.textChangeDelegate = new TextChangeDelegate() {
@@ -136,10 +144,12 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 当前绘制的所有step
      */
     private List<DrawingStep> drawnSteps;
+
     private DrawingLayerTextView setDrawnSteps(List<DrawingStep> drawnSteps) {
         this.drawnSteps = drawnSteps;
         return this;
     }
+
     public List<DrawingStep> getDrawnSteps() {
         if (this.drawnSteps == null) {
             this.drawnSteps = new ArrayList<>();
@@ -151,10 +161,12 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 是否编辑状态
      */
     private boolean editing;
+
     private DrawingLayerTextView setEditing(boolean editing) {
         this.editing = editing;
         return this;
     }
+
     public boolean isEditing() {
         return this.editing;
     }
@@ -163,10 +175,12 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 是否首次编辑
      */
     private boolean firstEditing;
+
     private DrawingLayerTextView setFirstEditing(boolean firstEditing) {
         this.firstEditing = firstEditing;
         return this;
     }
+
     public boolean isFirstEditing() {
         return this.firstEditing;
     }
@@ -175,10 +189,12 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 下一step开始时记录的先前的text内容
      */
     private String unchangedText;
+
     private DrawingLayerTextView setUnchangedText(String unchangedText) {
         this.unchangedText = unchangedText;
         return this;
     }
+
     public String getUnchangedText() {
         return this.unchangedText;
     }
@@ -188,6 +204,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private RectF borderRect;
+
     public RectF getBorderRect() {
         if (this.borderRect == null) {
             this.borderRect = new RectF();
@@ -200,6 +217,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private Rect canvasClipBounds;
+
     public Rect getCanvasClipBounds() {
         if (this.canvasClipBounds == null) {
             this.canvasClipBounds = new Rect();
@@ -212,6 +230,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private Paint borderPaint;
+
     public Paint getBorderPaint() {
         if (this.borderPaint == null) {
             this.borderPaint = new Paint();
@@ -229,6 +248,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private Path borderPath;
+
     public Path getBorderPath() {
         if (this.borderPath == null) {
             this.borderPath = new Path();
@@ -281,7 +301,10 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
     }
 
     /* Delegates */
-    /** {@link DrawingLayerViewProtocol} */
+
+    /**
+     * {@link DrawingLayerViewProtocol}
+     */
     @Override
     public void clearDrawing() {
     }
@@ -335,7 +358,9 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
         appendWithSteps(drawnSteps);
     }
 
-    /** {@link DrawingLayerViewProtocol#getLayerHierarchy()} */
+    /**
+     * {@link DrawingLayerViewProtocol#getLayerHierarchy()}
+     */
     private int hierarchy;
 
     @Override
@@ -348,7 +373,9 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
         this.hierarchy = hierarchy;
     }
 
-    /** {@link DrawingLayerViewProtocol#setHandling(boolean)} {@link DrawingLayerViewProtocol#isHandling()} */
+    /**
+     * {@link DrawingLayerViewProtocol#setHandling(boolean)} {@link DrawingLayerViewProtocol#isHandling()}
+     */
     private boolean handling;
 
     @Override
@@ -368,8 +395,11 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
         invalidate();
     }
 
-    /** {@link DrawingLayerViewProtocol#setCanHandle(boolean)} {@link DrawingLayerViewProtocol#canHandle()} */
+    /**
+     * {@link DrawingLayerViewProtocol#setCanHandle(boolean)} {@link DrawingLayerViewProtocol#canHandle()}
+     */
     private boolean canHandle = true;
+
     @Override
     public boolean canHandle() {
         return this.canHandle;
@@ -382,6 +412,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
     /** {@link DrawingLayerViewProtocol} */
 
     /* Private Methods */
+
     /**
      * 初始化
      */
@@ -401,9 +432,11 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 getTextChangeDelegate().onTextChange(self, s.toString());
@@ -413,6 +446,7 @@ public class DrawingLayerTextView extends EditText implements DrawingLayerViewPr
 
     /**
      * 根据step更新图层状态
+     *
      * @param drawingStep 更新用step
      */
     private void updateFrame(DrawingStep drawingStep) {

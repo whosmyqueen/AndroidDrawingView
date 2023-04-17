@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.R;
 import com.vilyever.drawingview.model.DrawingPath;
@@ -80,8 +81,7 @@ public class LineBrush extends ShapeBrush {
                 pathFrame.top -= dy;
                 pathFrame.right += dx;
                 pathFrame.bottom += dy;
-            }
-            else {
+            } else {
                 pathFrame = super.drawPath(canvas, drawingPath, state);
             }
 

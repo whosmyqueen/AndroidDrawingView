@@ -5,7 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.R;
 import com.vilyever.drawingview.model.DrawingPath;
@@ -76,24 +77,24 @@ public class RightAngledTriangleBrush extends ShapeBrush {
                 return Frame.EmptyFrame();
             }
 
-//            锐角距差计算，改用新算法
-//            pathFrame = new RectF(drawingRect);
-//
-//            // 计算相似三角形比例
-//            double x = pathFrame.right - pathFrame.left; // 底边
-//            double y = pathFrame.bottom - pathFrame.top; // 左侧边
-//            double z = Math.sqrt(x * x + y * y); // 斜边
-//            double cos = y / z; // 左上角cos值
-//            double tan = x / y; // 左上角tan值
-//            double u = (getSize() / 2.0f) * (1 + 1 / cos); // 内外三角顶部间辅助相似三角形底边
-//            double q = u / tan; // 内外三角顶部间辅助相似三角形左侧边
-//            double factor = (y + (getSize() / 2.0f) + q) / y; // 相似比
-//
-//            pathFrame.top -= y * (factor - 1) - getSize() / 2.0f;
-//            pathFrame.right += x * (factor - 1) - getSize() / 2.0f;
-//
-//            pathFrame.left -= getSize() / 2.0f;
-//            pathFrame.bottom += getSize() / 2.0f;
+            //            锐角距差计算，改用新算法
+            //            pathFrame = new RectF(drawingRect);
+            //
+            //            // 计算相似三角形比例
+            //            double x = pathFrame.right - pathFrame.left; // 底边
+            //            double y = pathFrame.bottom - pathFrame.top; // 左侧边
+            //            double z = Math.sqrt(x * x + y * y); // 斜边
+            //            double cos = y / z; // 左上角cos值
+            //            double tan = x / y; // 左上角tan值
+            //            double u = (getSize() / 2.0f) * (1 + 1 / cos); // 内外三角顶部间辅助相似三角形底边
+            //            double q = u / tan; // 内外三角顶部间辅助相似三角形左侧边
+            //            double factor = (y + (getSize() / 2.0f) + q) / y; // 相似比
+            //
+            //            pathFrame.top -= y * (factor - 1) - getSize() / 2.0f;
+            //            pathFrame.right += x * (factor - 1) - getSize() / 2.0f;
+            //
+            //            pathFrame.left -= getSize() / 2.0f;
+            //            pathFrame.bottom += getSize() / 2.0f;
 
             Path path = new Path();
             Frame pathFrame;
@@ -108,8 +109,7 @@ public class RightAngledTriangleBrush extends ShapeBrush {
                 path.lineTo(drawingRect.right, drawingRect.bottom);
                 path.lineTo(drawingRect.left, drawingRect.top);
                 path.lineTo(drawingRect.left, drawingRect.bottom);
-            }
-            else {
+            } else {
                 double w = getSize() / 2.0; // 内外间距
                 double x = drawingRect.right - drawingRect.left; // 底边
                 double y = drawingRect.bottom - drawingRect.top; // 左侧边

@@ -1,6 +1,7 @@
 package com.vilyever.drawingview.model;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.brush.Brush;
 import com.vilyever.drawingview.layer.DrawingLayerViewProtocol;
@@ -30,10 +31,13 @@ public class DrawingStep extends JsonModel {
     }
 
     /* Public Methods */
+
     /**
      * 复制step
      * 同步时不应传出原始step，以免被外部修改
+     *
      * @param step 原step
+     *
      * @return 复制的step
      */
     public static DrawingStep copy(@NonNull DrawingStep step) {
@@ -42,6 +46,7 @@ public class DrawingStep extends JsonModel {
 
     /**
      * 复制step
+     *
      * @return 复制的step
      */
     public DrawingStep copy() {
@@ -51,7 +56,8 @@ public class DrawingStep extends JsonModel {
     /**
      * 在重绘前调用此方法设置绘制比例
      * 在不同尺寸的view上绘制时将尽量呈现出类似的图形
-     * @param currentDrawingViewWidth 当前绘制view的宽
+     *
+     * @param currentDrawingViewWidth  当前绘制view的宽
      * @param currentDrawingViewHeight 当前绘制view的高
      */
     public void updateDrawingRatio(int currentDrawingViewWidth, int currentDrawingViewHeight) {
@@ -72,6 +78,7 @@ public class DrawingStep extends JsonModel {
 
     /**
      * 判断当前step是否是clear step的快捷方法
+     *
      * @return 是否是clear step
      */
     public boolean isClearStep() {
@@ -85,10 +92,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("S")
     private int step;
+
     public DrawingStep setStep(int step) {
         this.step = step;
         return this;
     }
+
     public int getStep() {
         return this.step;
     }
@@ -99,12 +108,15 @@ public class DrawingStep extends JsonModel {
     public enum StepType {
         Clear, DrawOnBase, DrawTextOnBase, Background, CreateLayer, Transform, TextChange, DeleteLayer;
     }
+
     @JsonKey("ST")
     private StepType stepType;
+
     public DrawingStep setStepType(StepType stepType) {
         this.stepType = stepType;
         return this;
     }
+
     public StepType getStepType() {
         return this.stepType;
     }
@@ -114,10 +126,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("DS")
     private Brush.DrawingState drawingState;
+
     public DrawingStep setDrawingState(Brush.DrawingState drawingState) {
         this.drawingState = drawingState;
         return this;
     }
+
     public Brush.DrawingState getDrawingState() {
         return this.drawingState;
     }
@@ -128,10 +142,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("SO")
     private boolean stepOver;
+
     public DrawingStep setStepOver(boolean stepOver) {
         this.stepOver = stepOver;
         return this;
     }
+
     public boolean isStepOver() {
         return this.stepOver;
     }
@@ -142,20 +158,24 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("C")
     private boolean canceled;
+
     public DrawingStep setCanceled(boolean canceled) {
         this.canceled = canceled;
         return this;
     }
+
     public boolean isCanceled() {
         return this.canceled;
     }
 
     @JsonKey("R")
     private boolean remote;
+
     public DrawingStep setRemote(boolean remote) {
         this.remote = remote;
         return this;
     }
+
     public boolean isRemote() {
         return this.remote;
     }
@@ -166,10 +186,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("BR")
     private Brush brush;
+
     public DrawingStep setBrush(Brush brush) {
         this.brush = brush;
         return this;
     }
+
     public <T extends Brush> T getBrush() {
         return (T) this.brush;
     }
@@ -179,10 +201,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("DL")
     private DrawingLayer drawingLayer;
+
     private DrawingStep setDrawingLayer(DrawingLayer drawingLayer) {
         this.drawingLayer = drawingLayer;
         return this;
     }
+
     public DrawingLayer getDrawingLayer() {
         return this.drawingLayer;
     }
@@ -192,10 +216,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("DP")
     private DrawingPath drawingPath;
+
     private DrawingStep setDrawingPath(DrawingPath drawingPath) {
         this.drawingPath = drawingPath;
         return this;
     }
+
     public DrawingPath getDrawingPath() {
         if (this.drawingPath == null) {
             this.drawingPath = new DrawingPath();
@@ -210,10 +236,12 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("DVW")
     private int drawingViewWidth;
+
     public DrawingStep setDrawingViewWidth(int drawingViewWidth) {
         this.drawingViewWidth = drawingViewWidth;
         return this;
     }
+
     public int getDrawingViewWidth() {
         return this.drawingViewWidth;
     }
@@ -225,30 +253,37 @@ public class DrawingStep extends JsonModel {
      */
     @JsonKey("DVH")
     private int drawingViewHeight;
+
     public DrawingStep setDrawingViewHeight(int drawingViewHeight) {
         this.drawingViewHeight = drawingViewHeight;
         return this;
     }
+
     public int getDrawingViewHeight() {
         return this.drawingViewHeight;
     }
 
     @JsonKeyIgnore
     private WeakReference<DrawingLayerViewProtocol> handlingLayer;
+
     public DrawingStep setHandlingLayer(DrawingLayerViewProtocol handlingLayer) {
         this.handlingLayer = new WeakReference<DrawingLayerViewProtocol>(handlingLayer);
         return this;
     }
+
     public DrawingLayerViewProtocol getHandlingLayer() {
         return this.handlingLayer == null ? null : this.handlingLayer.get();
     }
 
     /* Private Methods */
+
     /**
      * 设置当前step是在哪一层级，哪种图层类型绘制
      * 默认在初始化后如果该step是与图层有关的应当调用此方法一次且仅一次
+     *
      * @param hierarchy 层级
      * @param layerType 图层类型
+     *
      * @return 生成的图层layer
      */
     private DrawingLayer newDrawingLayer(int hierarchy, DrawingLayer.LayerType layerType) {

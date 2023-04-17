@@ -5,7 +5,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.brush.drawing.DrawingBrush;
 import com.vilyever.drawingview.brush.text.TextBrush;
@@ -29,11 +30,14 @@ public abstract class Brush extends JsonModel {
     final Brush self = this;
 
     /* Public Methods */
+
     /**
      * 复制画笔
      * 每次存储绘制数据时都应用复制的brush存储
+     *
      * @param brush 原brush
-     * @param <T> 类型
+     * @param <T>   类型
+     *
      * @return 复制的brush
      */
     public static <T extends Brush> T copy(@NonNull Brush brush) {
@@ -43,7 +47,9 @@ public abstract class Brush extends JsonModel {
     /**
      * 复制画笔
      * 每次存储绘制数据时都应用复制的brush存储
+     *
      * @param <T> 类型
+     *
      * @return 复制的brush
      */
     public <T extends Brush> T copy() {
@@ -51,10 +57,10 @@ public abstract class Brush extends JsonModel {
     }
 
     /**
-     *
-     * @param canvas the canvas in drawing
+     * @param canvas      the canvas in drawing
      * @param drawingPath the path will draw
-     * @param state drawing state
+     * @param state       drawing state
+     *
      * @return 绘制图形所处的Frame，不同state可能返回不同坐标，若返回EmptyFrame表示path不足以作图，若返回requireMoreDetail为true表示当前path不能完成作图，需要进一步触摸绘制
      */
     @NonNull
@@ -62,6 +68,7 @@ public abstract class Brush extends JsonModel {
 
     /**
      * 当前版本暂时未使用到
+     *
      * @return 同一笔绘图时是否在path变更时消除先前作图
      */
     public boolean shouldDrawFromBegin() {
@@ -74,9 +81,11 @@ public abstract class Brush extends JsonModel {
      */
     @JsonKey("OSTL")
     protected boolean oneStrokeToLayer;
+
     public boolean isOneStrokeToLayer() {
         return this.oneStrokeToLayer;
     }
+
     public <T extends Brush> T setOneStrokeToLayer(boolean oneStrokeToLayer) {
         this.oneStrokeToLayer = oneStrokeToLayer;
         return (T) this;
@@ -86,24 +95,26 @@ public abstract class Brush extends JsonModel {
      * 当前绘制比例
      * 在记录数据时drawingView的宽高和当前重绘时的宽高比
      * 用于在不同分辨率下重绘相似的图形全貌
-     *
+     * <p>
      * 在brush中此比例不分xy轴，取xy轴中变化最大的一轴
      */
     @JsonKeyIgnore
     private float drawingRatio = 1.0f;
+
     public Brush setDrawingRatio(float drawingRatio) {
         this.drawingRatio = drawingRatio;
         return this;
     }
+
     public float getDrawingRatio() {
         return drawingRatio;
     }
 
 
     /* Inner Classes */
+
     /**
      * 画笔绘制所需尺寸类
-     *
      */
     public static class Frame extends RectF {
         /**
@@ -174,7 +185,7 @@ public abstract class Brush extends JsonModel {
         public DrawingState() {
         }
 
-        public DrawingState(DrawingPointerState ... states) {
+        public DrawingState(DrawingPointerState... states) {
             for (DrawingPointerState state : states) {
                 this.pointerState |= state.state();
             }
@@ -213,24 +224,31 @@ public abstract class Brush extends JsonModel {
         public boolean isTouchDown() {
             return (this.pointerState & DrawingPointerState.TouchDown.state()) == DrawingPointerState.TouchDown.state();
         }
+
         public boolean isTouchMoving() {
             return (this.pointerState & DrawingPointerState.TouchMoving.state()) == DrawingPointerState.TouchMoving.state();
         }
+
         public boolean isTouchUp() {
             return (this.pointerState & DrawingPointerState.TouchUp.state()) == DrawingPointerState.TouchUp.state();
         }
+
         public boolean isFetchFrame() {
             return (this.pointerState & DrawingPointerState.FetchFrame.state()) == DrawingPointerState.FetchFrame.state();
         }
+
         public boolean isCalibrateToOrigin() {
             return (this.pointerState & DrawingPointerState.CalibrateToOrigin.state()) == DrawingPointerState.CalibrateToOrigin.state();
         }
+
         public boolean isForceFinish() {
             return (this.pointerState & DrawingPointerState.ForceFinish.state()) == DrawingPointerState.ForceFinish.state();
         }
+
         public boolean isVeryBegin() {
             return (this.pointerState & DrawingPointerState.VeryBegin.state()) == DrawingPointerState.VeryBegin.state();
         }
+
         public boolean isVeryEnd() {
             return (this.pointerState & DrawingPointerState.VeryEnd.state()) == DrawingPointerState.VeryEnd.state();
         }
@@ -246,6 +264,7 @@ public abstract class Brush extends JsonModel {
     }
 
     /* Enums */
+
     /**
      * 当前绘制状态
      */

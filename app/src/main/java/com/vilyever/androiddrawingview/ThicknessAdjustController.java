@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 
 import com.vilyever.unitconversion.DimenConverter;
 
+
 /**
  * ThicknessAdjustController
  * AndroidDrawingView <com.vilyever.androiddrawingview>
@@ -54,9 +55,9 @@ public class ThicknessAdjustController extends BasePopupController {
             }
         });
     }
-    
-    /* #Overrides */    
-    
+
+    /* #Overrides */
+
     /* #Accessors */
     public ThicknessDelegate getThicknessDelegate() {
         return thicknessDelegate;
@@ -67,9 +68,9 @@ public class ThicknessAdjustController extends BasePopupController {
     }
 
     /* #Delegates */
-     
-    /* #Private Methods */    
-    
+
+    /* #Private Methods */
+
     /* #Public Methods */
     public void setThickness(int thickness) {
         self.seekBar.setProgress(thickness - 1);
@@ -82,8 +83,8 @@ public class ThicknessAdjustController extends BasePopupController {
     public interface ThicknessDelegate {
         void thicknessDidChangeFromThicknessAdjustController(ThicknessAdjustController controller, int thickness);
     }
-     
-    /* #Annotations @interface */    
-    
+
+    /* #Annotations @interface */
+
     /* #Enums */
 }

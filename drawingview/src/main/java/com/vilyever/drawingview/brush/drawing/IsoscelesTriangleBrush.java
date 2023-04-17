@@ -5,7 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.R;
 import com.vilyever.drawingview.model.DrawingPath;
@@ -76,21 +77,21 @@ public class IsoscelesTriangleBrush extends ShapeBrush {
                 return Frame.EmptyFrame();
             }
 
-//            锐角距差计算，改用新算法
-//            pathFrame = new RectF(drawingRect);
-//
-//            // 计算相似三角形比例
-//            double x = pathFrame.right - pathFrame.left; // 底边
-//            double h = pathFrame.bottom - pathFrame.top; // 高
-//            double y = Math.sqrt((x / 2.0f) * (x / 2.0f) + h * h); // 斜边
-//            double sin = (x / 2.0f) / y; // 顶角角度一半的sin值
-//            double factor = (h + (getSize() / 2.0f) * (1 / sin + 1)) / h; // 相似比
-//
-//            pathFrame.left -= x * (factor - 1) / 2.0f;
-//            pathFrame.top -= h * (factor - 1) - getSize() / 2.0f;
-//            pathFrame.right += x * (factor - 1) / 2.0f;
-//
-//            pathFrame.bottom += getSize() / 2.0f;
+            //            锐角距差计算，改用新算法
+            //            pathFrame = new RectF(drawingRect);
+            //
+            //            // 计算相似三角形比例
+            //            double x = pathFrame.right - pathFrame.left; // 底边
+            //            double h = pathFrame.bottom - pathFrame.top; // 高
+            //            double y = Math.sqrt((x / 2.0f) * (x / 2.0f) + h * h); // 斜边
+            //            double sin = (x / 2.0f) / y; // 顶角角度一半的sin值
+            //            double factor = (h + (getSize() / 2.0f) * (1 / sin + 1)) / h; // 相似比
+            //
+            //            pathFrame.left -= x * (factor - 1) / 2.0f;
+            //            pathFrame.top -= h * (factor - 1) - getSize() / 2.0f;
+            //            pathFrame.right += x * (factor - 1) / 2.0f;
+            //
+            //            pathFrame.bottom += getSize() / 2.0f;
 
             Path path = new Path();
             Frame pathFrame;
@@ -105,8 +106,7 @@ public class IsoscelesTriangleBrush extends ShapeBrush {
                 path.lineTo(drawingRect.right, drawingRect.bottom);
                 path.lineTo((drawingRect.left + drawingRect.right) / 2.0f, drawingRect.top);
                 path.lineTo(drawingRect.left, drawingRect.bottom);
-            }
-            else {
+            } else {
                 double w = getSize() / 2.0; // 内外间距
                 double x = drawingRect.right - drawingRect.left; // 底边
                 double h = drawingRect.bottom - drawingRect.top; // 高

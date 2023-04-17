@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.R;
 import com.vilyever.drawingview.model.DrawingPath;
@@ -85,8 +86,7 @@ public class PolygonBrush extends ShapeBrush {
                 endPoints.remove(lastPoint);
                 endPoints.add(beginPoint);
                 requireMoreDetail = false;
-            }
-            else if (state.isForceFinish()) {
+            } else if (state.isForceFinish()) {
                 endPoints.add(beginPoint);
                 requireMoreDetail = false;
             }

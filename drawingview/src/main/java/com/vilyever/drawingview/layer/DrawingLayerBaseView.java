@@ -8,10 +8,10 @@ import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.brush.Brush;
 import com.vilyever.drawingview.model.DrawingStep;
@@ -84,16 +84,20 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
         /**
          * 当前图层busy状态变更时回调
          * {@link #busying}
+         *
          * @param baseView 当前图层view
-         * @param busying 当前busy状态
+         * @param busying  当前busy状态
          */
         void onDrawingBusyStateChange(DrawingLayerBaseView baseView, boolean busying);
     }
+
     private BusyStateDelegate busyStateDelegate;
+
     public DrawingLayerBaseView setBusyStateDelegate(BusyStateDelegate busyStateDelegate) {
         this.busyStateDelegate = busyStateDelegate;
         return this;
     }
+
     public BusyStateDelegate getBusyStateDelegate() {
         if (this.busyStateDelegate == null) {
             this.busyStateDelegate = new BusyStateDelegate() {
@@ -109,10 +113,12 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 用于绘制的bitmap，常驻内存
      */
     private Bitmap drawingBitmap;
+
     private DrawingLayerBaseView setDrawingBitmap(Bitmap drawingBitmap) {
         this.drawingBitmap = drawingBitmap;
         return this;
     }
+
     private Bitmap getDrawingBitmap() {
         return this.drawingBitmap;
     }
@@ -121,10 +127,12 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 关联{@link #drawingBitmap}的画布
      */
     private Canvas drawingCanvas;
+
     private DrawingLayerBaseView setDrawingCanvas(Canvas drawingCanvas) {
         this.drawingCanvas = drawingCanvas;
         return this;
     }
+
     private Canvas getDrawingCanvas() {
         return this.drawingCanvas;
     }
@@ -133,10 +141,12 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 在绘制下一step时，临时存储先前绘制状态的bitmap，仅在新绘制时存在，用完即回收
      */
     private Bitmap tempBitmap;
+
     private DrawingLayerBaseView setTempBitmap(Bitmap tempBitmap) {
         this.tempBitmap = tempBitmap;
         return this;
     }
+
     private Bitmap getTempBitmap() {
         return this.tempBitmap;
     }
@@ -145,10 +155,12 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 当前绘制的所有step
      */
     private List<DrawingStep> drawnSteps;
+
     private DrawingLayerBaseView setDrawnSteps(List<DrawingStep> drawnSteps) {
         this.drawnSteps = drawnSteps;
         return this;
     }
+
     public List<DrawingStep> getDrawnSteps() {
         if (this.drawnSteps == null) {
             this.drawnSteps = new ArrayList<>();
@@ -157,6 +169,7 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
     }
 
     private List<DrawingStep> willDrawSteps;
+
     private List<DrawingStep> getWillDrawSteps() {
         if (this.willDrawSteps == null) {
             this.willDrawSteps = new ArrayList<>();
@@ -168,10 +181,12 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 当前正在绘制的step
      */
     private DrawingStep currentDrawingStep;
+
     private DrawingLayerBaseView setCurrentDrawingStep(DrawingStep currentDrawingStep) {
         this.currentDrawingStep = currentDrawingStep;
         return this;
     }
+
     public DrawingStep getCurrentDrawingStep() {
         return this.currentDrawingStep;
     }
@@ -183,13 +198,14 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 而在仅仅绘制新的单一step即{@link #currentDrawingStep}时
      * 对于绘制的实时性要求，将其在UI线程进行同步绘制
      * （即绘制的图形能跟随手指，如果单步绘制过于复杂，导致每一次绘制的时长都会导致卡顿，这样即使将其放到后台绘制，也会引发延时问题，故brush绘制一笔step的复杂时长不宜太长，理应控制在同步绘制不会引起卡顿的范围）
-     *
      */
     private Thread drawingThread;
+
     public DrawingLayerBaseView setDrawingThread(Thread drawingThread) {
         this.drawingThread = drawingThread;
         return this;
     }
+
     public Thread getDrawingThread() {
         return this.drawingThread;
     }
@@ -209,16 +225,19 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
         }
         return this;
     }
+
     public boolean isBusying() {
         return this.busying;
     }
 
 
     private boolean retainSnapshot;
+
     protected DrawingLayerBaseView setRetainSnapshot(boolean retainSnapshot) {
         this.retainSnapshot = retainSnapshot;
         return this;
     }
+
     protected boolean isRetainSnapshot() {
         return this.retainSnapshot;
     }
@@ -228,6 +247,7 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      * 在异步绘制开始和完成时产生一个回调
      */
     private Handler uiHandler;
+
     private Handler getUIHandler() {
         if (this.uiHandler == null) {
             this.uiHandler = new Handler(new Handler.Callback() {
@@ -265,12 +285,11 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
      */
     @Override
     public void run() {
-//        long beginTime = System.currentTimeMillis();
+        //        long beginTime = System.currentTimeMillis();
         try {
             if (!isRetainSnapshot()) {
                 setBusying(true); // 开始绘制时进入busying状态
-            }
-            else {
+            } else {
                 setRetainSnapshot(false);
             }
 
@@ -285,20 +304,17 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
                     DrawingStep step = getDrawnSteps().get(i);
                     if (step.getStepType() == DrawingStep.StepType.DrawOnBase) {
                         step.getBrush().drawPath(getDrawingCanvas(), step.getDrawingPath(), new Brush.DrawingState(Brush.DrawingPointerState.ForceFinish));
-                    }
-                    else if (step.getStepType() == DrawingStep.StepType.DrawTextOnBase) {
+                    } else if (step.getStepType() == DrawingStep.StepType.DrawTextOnBase) {
                         drawTextStep(step);
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
-//            while (System.currentTimeMillis() - beginTime < 5000) {
-//                Thread.yield();
-//            }
+        } finally {
+            //            while (System.currentTimeMillis() - beginTime < 5000) {
+            //                Thread.yield();
+            //            }
 
             // 结束绘制时脱离busying状态
             setBusying(false);
@@ -308,7 +324,9 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
     /** {@link Runnable} */
 
 
-    /** {@link DrawingLayerViewProtocol} */
+    /**
+     * {@link DrawingLayerViewProtocol}
+     */
     @Override
     public void clearDrawing() {
         getDrawnSteps().clear();
@@ -390,8 +408,7 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
             if (drawingStep.getStepType() == DrawingStep.StepType.DrawOnBase) {
                 frame = getCurrentDrawingStep().getBrush().drawPath(getDrawingCanvas(), getCurrentDrawingStep().getDrawingPath(), drawingStep.getDrawingState());
                 drawingStep.getDrawingLayer().setFrame(frame);
-            }
-            else if (drawingStep.getStepType() == DrawingStep.StepType.DrawTextOnBase) {
+            } else if (drawingStep.getStepType() == DrawingStep.StepType.DrawTextOnBase) {
                 drawTextStep(drawingStep);
             }
 
@@ -411,8 +428,7 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
             if (getDrawingThread() != null) {
                 getDrawingThread().interrupt();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -466,6 +482,7 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
     /** {@link DrawingLayerViewProtocol} */
 
     /* Private Methods */
+
     /**
      * 初始化
      */
@@ -484,16 +501,14 @@ public class DrawingLayerBaseView extends ImageView implements Runnable, Drawing
                 if (getDrawingBitmap() == null) {
                     setDrawingBitmap(Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888));
                     setDrawingCanvas(new Canvas(getDrawingBitmap()));
-                }
-                else if (getDrawingBitmap().getWidth() != getWidth()
+                } else if (getDrawingBitmap().getWidth() != getWidth()
                         || getDrawingBitmap().getHeight() != getHeight()) {
                     getDrawingBitmap().recycle();
                     System.gc();
                     setDrawingBitmap(Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888));
                     setDrawingCanvas(new Canvas(getDrawingBitmap()));
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // in recycler view, the view's size may very large when init
                 if (!(e instanceof IllegalArgumentException)) {
                     e.printStackTrace();

@@ -6,7 +6,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.brush.Brush;
 import com.vilyever.drawingview.model.DrawingPath;
@@ -18,7 +19,7 @@ import com.vilyever.drawingview.model.DrawingPoint;
  * Created by vilyever on 2015/10/20.
  * Feature:
  * 绘制图形类brush
- *
+ * <p>
  * Known Direct Subclasses:
  * {@link PenBrush}
  * {@link ShapeBrush}
@@ -41,9 +42,11 @@ public abstract class DrawingBrush extends Brush {
      */
     @JsonKey("S")
     protected float size;
+
     public float getSize() {
         return this.size * getDrawingRatio();
     }
+
     public <T extends DrawingBrush> T setSize(float size) {
         this.size = size;
         updatePaint();
@@ -55,12 +58,14 @@ public abstract class DrawingBrush extends Brush {
      */
     @JsonKey("C")
     protected int color;
+
     public int getColor() {
         if (isEraser()) {
             return Color.TRANSPARENT;
         }
         return this.color;
     }
+
     public <T extends DrawingBrush> T setColor(int color) {
         this.color = color;
         updatePaint();
@@ -72,9 +77,11 @@ public abstract class DrawingBrush extends Brush {
      */
     @JsonKey("E")
     protected boolean isEraser;
+
     public boolean isEraser() {
         return this.isEraser;
     }
+
     public <T extends DrawingBrush> T setIsEraser(boolean isEraser) {
         this.isEraser = isEraser;
         updatePaint();
@@ -87,6 +94,7 @@ public abstract class DrawingBrush extends Brush {
      */
     @JsonKeyIgnore
     protected Paint paint;
+
     public Paint getPaint() {
         if (this.paint == null) {
             this.paint = new Paint();
@@ -141,6 +149,7 @@ public abstract class DrawingBrush extends Brush {
     }
 
     /* Protected Methods */
+
     /**
      * 更新paint
      */
@@ -155,13 +164,15 @@ public abstract class DrawingBrush extends Brush {
 
     /**
      * 修正绘制边界
+     *
      * @param drawingRect 原绘制边界
+     *
      * @return 包含笔刷尺寸的边界
      */
     protected Frame makeFrameWithBrushSpace(RectF drawingRect) {
         return new Frame(drawingRect.left - getSize() / 2.0f,
-                            drawingRect.top - getSize() / 2.0f,
-                            drawingRect.right + getSize() / 2.0f,
-                            drawingRect.bottom + getSize() / 2.0f);
+                drawingRect.top - getSize() / 2.0f,
+                drawingRect.right + getSize() / 2.0f,
+                drawingRect.bottom + getSize() / 2.0f);
     }
 }

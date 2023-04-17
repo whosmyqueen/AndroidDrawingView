@@ -7,9 +7,10 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.contextholder.ContextHolder;
 import com.vilyever.drawingview.R;
@@ -57,10 +58,12 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
      * 当前绘制的所有step
      */
     private List<DrawingStep> drawnSteps;
+
     private DrawingLayerImageView setDrawnSteps(List<DrawingStep> drawnSteps) {
         this.drawnSteps = drawnSteps;
         return this;
     }
+
     public List<DrawingStep> getDrawnSteps() {
         if (this.drawnSteps == null) {
             this.drawnSteps = new ArrayList<>();
@@ -73,6 +76,7 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private RectF borderRect;
+
     public RectF getBorderRect() {
         if (this.borderRect == null) {
             this.borderRect = new RectF();
@@ -85,6 +89,7 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private Paint borderPaint;
+
     public Paint getBorderPaint() {
         if (this.borderPaint == null) {
             this.borderPaint = new Paint();
@@ -102,6 +107,7 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
      * 因onDraw调用频繁，不宜在onDraw内new新对象
      */
     private Path borderPath;
+
     public Path getBorderPath() {
         if (this.borderPath == null) {
             this.borderPath = new Path();
@@ -154,7 +160,10 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
     }
 
     /* Delegates */
-    /** {@link DrawingLayerViewProtocol} */
+
+    /**
+     * {@link DrawingLayerViewProtocol}
+     */
     @Override
     public void clearDrawing() {
         getDrawnSteps().clear();
@@ -212,7 +221,9 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
     }
 
 
-    /** {@link DrawingLayerViewProtocol#getLayerHierarchy()} */
+    /**
+     * {@link DrawingLayerViewProtocol#getLayerHierarchy()}
+     */
     private int hierarchy;
 
     @Override
@@ -225,7 +236,9 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
         this.hierarchy = hierarchy;
     }
 
-    /** {@link DrawingLayerViewProtocol#setHandling(boolean)} {@link DrawingLayerViewProtocol#isHandling()} */
+    /**
+     * {@link DrawingLayerViewProtocol#setHandling(boolean)} {@link DrawingLayerViewProtocol#isHandling()}
+     */
     private boolean handling;
 
     @Override
@@ -245,7 +258,9 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
         invalidate();
     }
 
-    /** {@link DrawingLayerViewProtocol#setCanHandle(boolean)} {@link DrawingLayerViewProtocol#canHandle()} */
+    /**
+     * {@link DrawingLayerViewProtocol#setCanHandle(boolean)} {@link DrawingLayerViewProtocol#canHandle()}
+     */
     private boolean canHandle = true;
 
     @Override
@@ -260,6 +275,7 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
     /** {@link DrawingLayerViewProtocol} */
 
     /* Private Methods */
+
     /**
      * 初始化
      */
@@ -270,6 +286,7 @@ public class DrawingLayerImageView extends ImageView implements DrawingLayerView
 
     /**
      * 根据step更新图层状态
+     *
      * @param drawingStep 更新用step
      */
     private void updateFrame(DrawingStep drawingStep) {

@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.R;
 import com.vilyever.drawingview.model.DrawingPath;
@@ -65,8 +66,7 @@ public class PenBrush extends DrawingBrush {
             if (drawingPath.getPoints().size() == 1) {
                 getPaint().setStyle(Paint.Style.FILL);
                 path.addCircle(beginPoint.getX(), beginPoint.getY(), getSize() / 2.0f, Path.Direction.CW);
-            }
-            else if (drawingPath.getPoints().size() > 1) {
+            } else if (drawingPath.getPoints().size() > 1) {
                 path.moveTo(beginPoint.getX(), beginPoint.getY());
                 for (int i = 1; i < drawingPath.getPoints().size(); i++) {
                     DrawingPoint prePoint = drawingPath.getPoints().get(i - 1);
@@ -76,10 +76,9 @@ public class PenBrush extends DrawingBrush {
 
                     if (s < 2) { // 往复颤抖间距估值，高分辨率上使用quadTo会出现异常绘画，反复在一点来回抖动会出现毛刺
                         path.lineTo(currentPoint.getX(), currentPoint.getY());
-                    }
-                    else {
+                    } else {
                         path.quadTo(prePoint.getX(), prePoint.getY(),
-                                     (prePoint.getX() + currentPoint.getX()) / 2.0f, (prePoint.getY() + currentPoint.getY()) / 2.0f);
+                                (prePoint.getX() + currentPoint.getX()) / 2.0f, (prePoint.getY() + currentPoint.getY()) / 2.0f);
                     }
 
                     if (state.shouldEnd()) {

@@ -2,7 +2,6 @@ package com.vilyever.drawingview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,15 +9,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+
 import com.vilyever.drawingview.brush.Brush;
 import com.vilyever.drawingview.brush.drawing.DrawingBrush;
 import com.vilyever.drawingview.brush.drawing.PenBrush;
 import com.vilyever.drawingview.brush.text.TextBrush;
-import com.vilyever.drawingview.layer.DrawingLayerViewProtocol;
 import com.vilyever.drawingview.layer.DrawingLayerBaseView;
 import com.vilyever.drawingview.layer.DrawingLayerContainer;
 import com.vilyever.drawingview.layer.DrawingLayerImageView;
 import com.vilyever.drawingview.layer.DrawingLayerTextView;
+import com.vilyever.drawingview.layer.DrawingLayerViewProtocol;
 import com.vilyever.drawingview.model.DrawingData;
 import com.vilyever.drawingview.model.DrawingLayer;
 import com.vilyever.drawingview.model.DrawingPoint;
@@ -73,11 +74,11 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
         endUnfinishedStep(); // 结束当前未完成的step
         internalClear(); // 清空绘制
         getDrawingData()
-            .newDrawingStepOnBaseLayer(getWidth(), getHeight())
-            .setStepType(DrawingStep.StepType.Clear); // 记录清空step
+                .newDrawingStepOnBaseLayer(getWidth(), getHeight())
+                .setStepType(DrawingStep.StepType.Clear); // 记录清空step
         overCurrentStep(); // 结束当前step
     }
-    
+
     /**
      * 获取当前正在绘制（或刚刚绘制完成）的step
      *
@@ -97,16 +98,14 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
         if (step.getStep() != getCurrentDrawingStep().getStep()) {
             endUnfinishedStep();
             getDrawingData().addDrawingStep(step);
-        }
-        else {
+        } else {
             getDrawingData().replaceDrawingStep(step);
         }
 
         if (step.isCanceled()) {
             internalCancelCurrentStep();
             getDrawingData().cancelDrawingStep();
-        }
-        else {
+        } else {
             internalUpdateCurrentStep(false);
         }
     }
@@ -156,8 +155,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
     public void loseDrawingFocus() {
         if (isTouching()) {
             setWillLoseFocusAfterTouching(true);
-        }
-        else {
+        } else {
             endUnfinishedStep();
             setWillLoseFocusAfterTouching(false);
         }
@@ -185,15 +183,14 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
         DrawingLayer.LayerType layerType = DrawingLayer.LayerType.BaseDrawing;
         if (layerViewProtocol instanceof DrawingLayerImageView) {
             layerType = DrawingLayer.LayerType.LayerDrawing;
-        }
-        else if (layerViewProtocol instanceof DrawingLayerTextView) {
+        } else if (layerViewProtocol instanceof DrawingLayerTextView) {
             layerType = DrawingLayer.LayerType.LayerText;
         }
 
         getDrawingData()
-            .newDrawingStepOnLayer(layerHierarchy, layerType, getWidth(), getHeight())
-            .setStepType(DrawingStep.StepType.Background)
-            .getDrawingLayer().setBackgroundColor(color);
+                .newDrawingStepOnLayer(layerHierarchy, layerType, getWidth(), getHeight())
+                .setStepType(DrawingStep.StepType.Background)
+                .getDrawingLayer().setBackgroundColor(color);
         overCurrentStep();
     }
 
@@ -221,15 +218,14 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
         DrawingLayer.LayerType layerType = DrawingLayer.LayerType.BaseDrawing;
         if (layerViewProtocol instanceof DrawingLayerImageView) {
             layerType = DrawingLayer.LayerType.LayerDrawing;
-        }
-        else if (layerViewProtocol instanceof DrawingLayerTextView) {
+        } else if (layerViewProtocol instanceof DrawingLayerTextView) {
             layerType = DrawingLayer.LayerType.LayerText;
         }
 
         getDrawingData()
-            .newDrawingStepOnLayer(layerHierarchy, layerType, getWidth(), getHeight())
-            .setStepType(DrawingStep.StepType.Background)
-            .getDrawingLayer().setBackgroundImageIdentifier(identifier);
+                .newDrawingStepOnLayer(layerHierarchy, layerType, getWidth(), getHeight())
+                .setStepType(DrawingStep.StepType.Background)
+                .getDrawingLayer().setBackgroundImageIdentifier(identifier);
         overCurrentStep();
     }
 
@@ -267,7 +263,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
 
         // 如果当前操作的图层存在，删除数据，移除图层，记录step
         if (getHandlingLayerView() != null
-            && getHandlingLayerView().getLayerHierarchy() > 0) {
+                && getHandlingLayerView().getLayerHierarchy() > 0) {
             endUnfinishedStep();
 
             // 此时若因endUnfinishedStep消除了当前layer，则相当于成功删除了当前layer，但此步不会出现在undo，redo中
@@ -276,8 +272,8 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
             }
 
             getDrawingData()
-                .newDrawingStepOnLayer(getHandlingLayerView().getLayerHierarchy(), DrawingLayer.LayerType.Unknown, getWidth(), getHeight())
-                .setStepType(DrawingStep.StepType.DeleteLayer);
+                    .newDrawingStepOnLayer(getHandlingLayerView().getLayerHierarchy(), DrawingLayer.LayerType.Unknown, getWidth(), getHeight())
+                    .setStepType(DrawingStep.StepType.DeleteLayer);
 
             getLayerContainer().removeLayerView(getHandlingLayerView());
             getLayerViews().remove(getHandlingLayerView());
@@ -422,7 +418,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
         }
         return this.drawingStepDelegate;
     }
-    
+
     public interface UndoRedoStateDelegate {
         /**
          * 撤销重做状态变更
@@ -433,11 +429,14 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
          */
         void onUndoRedoStateChange(DrawingView drawingView, boolean canUndo, boolean canRedo);
     }
+
     private UndoRedoStateDelegate undoRedoStateDelegate;
+
     public DrawingView setUndoRedoStateDelegate(UndoRedoStateDelegate undoRedoStateDelegate) {
         this.undoRedoStateDelegate = undoRedoStateDelegate;
         return this;
     }
+
     public UndoRedoStateDelegate getUndoRedoStateDelegate() {
         if (this.undoRedoStateDelegate == null) {
             this.undoRedoStateDelegate = new UndoRedoStateDelegate() {
@@ -450,8 +449,8 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
         }
         return this.undoRedoStateDelegate;
     }
-    
-    
+
+
     public interface InterceptTouchDelegate {
         /**
          * 回报当前是否拦截了touch事件进行绘画（这个回调标志着绘画开始或结束），当此drawingView是recyclerView（或类似可滑动的view）的子view时可用于通知父view禁止滑动
@@ -461,17 +460,20 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
          */
         void requireInterceptTouchEvent(DrawingView drawingView, boolean isIntercept);
     }
+
     private InterceptTouchDelegate interceptTouchDelegate;
+
     public DrawingView setInterceptTouchDelegate(InterceptTouchDelegate interceptTouchDelegate) {
         this.interceptTouchDelegate = interceptTouchDelegate;
         return this;
     }
+
     public InterceptTouchDelegate getInterceptTouchDelegate() {
         if (this.interceptTouchDelegate == null) {
             this.interceptTouchDelegate = new InterceptTouchDelegate() {
                 @Override
                 public void requireInterceptTouchEvent(DrawingView drawingView, boolean isIntercept) {
-        
+
                 }
             };
         }
@@ -484,15 +486,19 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
          *
          * @param drawingView 当前view
          * @param identifier  drawable对应的标识id
+         *
          * @return 对应的drawable
          */
         Drawable gainBackground(DrawingView drawingView, String identifier);
     }
+
     private BackgroundDatasource backgroundDatasource;
+
     public DrawingView setBackgroundDatasource(BackgroundDatasource backgroundDatasource) {
         this.backgroundDatasource = backgroundDatasource;
         return this;
     }
+
     public BackgroundDatasource getBackgroundDatasource() {
         if (this.backgroundDatasource == null) {
             this.backgroundDatasource = new BackgroundDatasource() {
@@ -588,8 +594,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
 
         if (isTouching()) {
             setBrushChanged(true);
-        }
-        else {
+        } else {
             endUnfinishedStep();
         }
     }
@@ -850,7 +855,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
          * 第一只触摸的手指离开屏幕时，终止此轮触摸事件流继续绘制的许可
          */
         if (maskAction == MotionEvent.ACTION_POINTER_UP
-            && event.getActionIndex() == 0) {
+                && event.getActionIndex() == 0) {
             action = MotionEvent.ACTION_UP;
             setShouldHandleOnTouch(false);
         }
@@ -876,7 +881,9 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
 
     /* Delegates */
 
-    /** {@link android.view.View.OnLayoutChangeListener} */
+    /**
+     * {@link android.view.View.OnLayoutChangeListener}
+     */
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
         int oldWidth = oldRight - oldLeft;
@@ -898,7 +905,9 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
     }
     /** {@link android.view.View.OnLayoutChangeListener} */
 
-    /** {@link DrawingLayerTextView.TextChangeDelegate} */
+    /**
+     * {@link DrawingLayerTextView.TextChangeDelegate}
+     */
     @Override
     public void onTextChange(DrawingLayerTextView textView, String text) {
         getCurrentDrawingStep().getDrawingLayer().setText(text);
@@ -952,24 +961,22 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                      * 若绘制新图层，生成step，并生成对应的图层view
                      */
                     getDrawingData().newDrawingStepOnNextLayer(DrawingLayer.LayerType.LayerDrawing, getWidth(), getHeight())
-                        .setStepType(DrawingStep.StepType.CreateLayer)
-                        .setBrush(Brush.copy(drawingBrush))
-                        .setHandlingLayer(new DrawingLayerImageView(getContext(), getCurrentDrawingStep().getDrawingLayer().getHierarchy()));
+                            .setStepType(DrawingStep.StepType.CreateLayer)
+                            .setBrush(Brush.copy(drawingBrush))
+                            .setHandlingLayer(new DrawingLayerImageView(getContext(), getCurrentDrawingStep().getDrawingLayer().getHierarchy()));
                     getLayerViews().add(getHandlingLayerView());
                     getLayerContainer().addLayerView(getHandlingLayerView());
-                }
-                else {
+                } else {
                     /**
                      * 若绘制在base底层，仅生成step
                      */
                     getDrawingData()
-                        .newDrawingStepOnBaseLayer(getWidth(), getHeight())
-                        .setStepType(DrawingStep.StepType.DrawOnBase)
-                        .setBrush(Brush.copy(drawingBrush))
-                        .setHandlingLayer(getBaseLayerImageView());
+                            .newDrawingStepOnBaseLayer(getWidth(), getHeight())
+                            .setStepType(DrawingStep.StepType.DrawOnBase)
+                            .setBrush(Brush.copy(drawingBrush))
+                            .setHandlingLayer(getBaseLayerImageView());
                 }
-            }
-            else if (getBrush() instanceof TextBrush) {
+            } else if (getBrush() instanceof TextBrush) {
                 TextBrush textBrush = getBrush();
 
                 if (textBrush.isOneStrokeToLayer()) {
@@ -977,24 +984,23 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                      * text图层类似于 新绘画图层，生成step，生成图层view，记录操作图层
                      */
                     getDrawingData().newDrawingStepOnNextLayer(DrawingLayer.LayerType.LayerText, getWidth(), getHeight())
-                        .setStepType(DrawingStep.StepType.CreateLayer)
-                        .setBrush(Brush.copy(textBrush))
-                        .setHandlingLayer(new DrawingLayerTextView(getContext(), getCurrentDrawingStep().getDrawingLayer().getHierarchy()));
+                            .setStepType(DrawingStep.StepType.CreateLayer)
+                            .setBrush(Brush.copy(textBrush))
+                            .setHandlingLayer(new DrawingLayerTextView(getContext(), getCurrentDrawingStep().getDrawingLayer().getHierarchy()));
 
                     getLayerViews().add(getHandlingLayerView());
                     getLayerContainer().addLayerView(getHandlingLayerView());
-                }
-                else {
+                } else {
                     /**
                      * 若绘制在base底层，生成step，同绘制图层相同生成临时输入text图层，step结束后消除图层
                      */
                     getDrawingData()
-                        .newTextStepOnBaseLayer(getWidth(), getHeight())
-                        .setStepType(DrawingStep.StepType.DrawTextOnBase)
-                        .setBrush(Brush.copy(textBrush))
-                        .setHandlingLayer(new DrawingLayerTextView(getContext(), getCurrentDrawingStep().getDrawingLayer().getHierarchy()));
+                            .newTextStepOnBaseLayer(getWidth(), getHeight())
+                            .setStepType(DrawingStep.StepType.DrawTextOnBase)
+                            .setBrush(Brush.copy(textBrush))
+                            .setHandlingLayer(new DrawingLayerTextView(getContext(), getCurrentDrawingStep().getDrawingLayer().getHierarchy()));
 
-//                    getHandlingLayerView().setCanHandle(false); // 不显示图层效果
+                    //                    getHandlingLayerView().setCanHandle(false); // 不显示图层效果
                     getLayerViews().add(getHandlingLayerView());
                     getLayerContainer().addLayerView(getHandlingLayerView());
                 }
@@ -1009,8 +1015,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
 
                 getDrawingStepDelegate().onDrawingStepBegin(this, getCurrentDrawingStep());
             }
-        }
-        else {
+        } else {
             /**
              * 若此时正在绘制的step未完成，则继续绘制此step
              */
@@ -1136,8 +1141,8 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
     private void endUnfinishedStep() {
         // 仅处理未完成的step
         if (getCurrentDrawingStep() != null
-            && !getCurrentDrawingStep().isStepOver()
-            && getHandlingLayerView() != null) {
+                && !getCurrentDrawingStep().isStepOver()
+                && getHandlingLayerView() != null) {
 
             switch (getCurrentDrawingStep().getDrawingLayer().getLayerType()) {
                 case BaseDrawing: {
@@ -1189,20 +1194,18 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                             getDrawingStepDelegate().onDrawingStepChange(this, getCurrentDrawingStep());
 
                             finishDraw();
-                        }
-                        else {
+                        } else {
                             // 若未开始编辑，撤销此step
                             getLayerContainer().removeLayerView(textView);
                             getLayerViews().remove(textView);
                             cancelCurrentStep();
                         }
-                    }
-                    else {
-//                        getBaseLayerImageView().drawTextStep(getCurrentDrawingStep());
-//
-//                        getDrawingStepDelegate().onDrawingStepChange(this, getCurrentDrawingStep());
-//
-//                        finishDraw();
+                    } else {
+                        //                        getBaseLayerImageView().drawTextStep(getCurrentDrawingStep());
+                        //
+                        //                        getDrawingStepDelegate().onDrawingStepChange(this, getCurrentDrawingStep());
+                        //
+                        //                        finishDraw();
                     }
                     break;
                 }
@@ -1215,8 +1218,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                                 // 对text图层，若此时是第一次创建完图层，若已输入内容，结束此step
                                 getCurrentDrawingStep().getDrawingLayer().setText(textView.getText().toString());
                                 overCurrentStep();
-                            }
-                            else {
+                            } else {
                                 // 若未开始编辑，撤销此step
                                 getLayerContainer().removeLayerView(textView);
                                 getLayerViews().remove(textView);
@@ -1229,8 +1231,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                             if (textView.isChangedSinceLastStep()) {
                                 getCurrentDrawingStep().getDrawingLayer().setText(textView.getText().toString());
                                 overCurrentStep();
-                            }
-                            else {
+                            } else {
                                 cancelCurrentStep();
                             }
                             break;
@@ -1303,6 +1304,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
      * 根据层级查找图层
      *
      * @param layerHierarchy 层级
+     *
      * @return 图层
      */
     private DrawingLayerViewProtocol findLayerViewByLayerHierarchy(int layerHierarchy) {
@@ -1342,24 +1344,22 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                 if (isSkipToStepOver) {
                     getBaseLayerImageView().retainSnapshotOnNextBackgroundDraw();
                     getBaseLayerImageView().appendWithSteps(stepList);
-                }
-                else {
+                } else {
                     getBaseLayerImageView().appendWithDrawingStep(step);
                 }
-//                if (step.isStepOver()) {
-//                    setHandlingLayerView(getBaseLayerImageView());
-//                    step.setStepOver(false);
-//                    endUnfinishedStep();
-//                }
-//                else {
-//                    getBaseLayerImageView().appendWithDrawingStep(step);
-//                }
+                //                if (step.isStepOver()) {
+                //                    setHandlingLayerView(getBaseLayerImageView());
+                //                    step.setStepOver(false);
+                //                    endUnfinishedStep();
+                //                }
+                //                else {
+                //                    getBaseLayerImageView().appendWithDrawingStep(step);
+                //                }
                 break;
             case Background:
                 if (step.getDrawingLayer().getBackgroundImageIdentifier() != null) {
                     internalSetBackgroundDrawable(step.getDrawingLayer().getHierarchy(), getBackgroundDatasource().gainBackground(this, step.getDrawingLayer().getBackgroundImageIdentifier()));
-                }
-                else if (step.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
+                } else if (step.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
                     internalSetBackgroundColor(step.getDrawingLayer().getHierarchy(), step.getDrawingLayer().getBackgroundColor());
                 }
                 break;
@@ -1385,19 +1385,18 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
 
                 if (isSkipToStepOver) {
                     layerViewProtocol.appendWithSteps(stepList);
-                }
-                else {
+                } else {
                     layerViewProtocol.appendWithDrawingStep(step);
                 }
 
-//                if (step.isStepOver()) {
-//                    setHandlingLayerView(layerViewProtocol);
-//                    step.setStepOver(false);
-//                    endUnfinishedStep();
-//                }
-//                else {
-//                    getBaseLayerImageView().appendWithDrawingStep(step);
-//                }
+                //                if (step.isStepOver()) {
+                //                    setHandlingLayerView(layerViewProtocol);
+                //                    step.setStepOver(false);
+                //                    endUnfinishedStep();
+                //                }
+                //                else {
+                //                    getBaseLayerImageView().appendWithDrawingStep(step);
+                //                }
 
                 if (step.isStepOver()) {
                     layerViewProtocol.setCanHandle(true);
@@ -1407,36 +1406,34 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                 if (layerViewProtocol != null) {
                     if (isSkipToStepOver) {
                         layerViewProtocol.appendWithSteps(stepList);
-                    }
-                    else {
+                    } else {
                         layerViewProtocol.appendWithDrawingStep(step);
                     }
-//                    if (step.isStepOver()) {
-//                        setHandlingLayerView(layerViewProtocol);
-//                        step.setStepOver(false);
-//                        endUnfinishedStep();
-//                    }
-//                    else {
-//                        getBaseLayerImageView().appendWithDrawingStep(step);
-//                    }
+                    //                    if (step.isStepOver()) {
+                    //                        setHandlingLayerView(layerViewProtocol);
+                    //                        step.setStepOver(false);
+                    //                        endUnfinishedStep();
+                    //                    }
+                    //                    else {
+                    //                        getBaseLayerImageView().appendWithDrawingStep(step);
+                    //                    }
                 }
                 break;
             case TextChange:
                 if (layerViewProtocol != null) {
                     if (isSkipToStepOver) {
                         layerViewProtocol.appendWithSteps(stepList);
-                    }
-                    else {
+                    } else {
                         layerViewProtocol.appendWithDrawingStep(step);
                     }
-//                    if (step.isStepOver()) {
-//                        setHandlingLayerView(layerViewProtocol);
-//                        step.setStepOver(false);
-//                        endUnfinishedStep();
-//                    }
-//                    else {
-//                        getBaseLayerImageView().appendWithDrawingStep(step);
-//                    }
+                    //                    if (step.isStepOver()) {
+                    //                        setHandlingLayerView(layerViewProtocol);
+                    //                        step.setStepOver(false);
+                    //                        endUnfinishedStep();
+                    //                    }
+                    //                    else {
+                    //                        getBaseLayerImageView().appendWithDrawingStep(step);
+                    //                    }
                 }
                 break;
             case DeleteLayer:
@@ -1485,11 +1482,9 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
     private void internalSetBackgroundColor(int layerHierarchy, int color) {
         if (layerHierarchy < 0) {
             return;
-        }
-        else if (layerHierarchy == 0) {
+        } else if (layerHierarchy == 0) {
             getBaseLayerImageView().setBackgroundColor(color);
-        }
-        else {
+        } else {
             DrawingLayerViewProtocol layerViewProtocol = findLayerViewByLayerHierarchy(layerHierarchy);
             if (layerViewProtocol == null) {
                 return;
@@ -1506,11 +1501,9 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
     private void internalSetBackgroundDrawable(int layerHierarchy, Drawable drawable) {
         if (layerHierarchy < 0) {
             return;
-        }
-        else if (layerHierarchy == 0) {
+        } else if (layerHierarchy == 0) {
             getBaseLayerImageView().setBackground(drawable);
-        }
-        else {
+        } else {
             DrawingLayerViewProtocol layerViewProtocol = findLayerViewByLayerHierarchy(layerHierarchy);
             if (layerViewProtocol == null) {
                 return;
@@ -1579,7 +1572,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                 step.updateDrawingRatio(getWidth(), getHeight());
 
                 if (step.getDrawingLayer().getBackgroundImageIdentifier() != null
-                    || step.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
+                        || step.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
                     lastBackgroundStepIndex = i;
                 }
             }
@@ -1593,16 +1586,14 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                     DrawingStep lastBackgroundDrawingStep = currentLayerSteps.get(lastBackgroundStepIndex);
                     if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundImageIdentifier() != null) {
                         getBaseLayerImageView().setBackground(getBackgroundDatasource().gainBackground(this, lastBackgroundDrawingStep.getDrawingLayer().getBackgroundImageIdentifier()));
-                    }
-                    else if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
+                    } else if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
                         getBaseLayerImageView().setBackgroundColor(lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor());
                     }
                 }
 
                 // 绘制base底层，异步
                 getBaseLayerImageView().refreshWithDrawnSteps(currentLayerSteps);
-            }
-            else if (layerHierarchy > 0) { // 图层生成
+            } else if (layerHierarchy > 0) { // 图层生成
                 // 生成各个图层，同步
                 DrawingStep firstDrawingStep = currentLayerSteps.get(0);
                 DrawingStep lastDrawingStep = currentLayerSteps.get(currentLayerSteps.size() - 1);
@@ -1620,8 +1611,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                             DrawingStep lastBackgroundDrawingStep = currentLayerSteps.get(lastBackgroundStepIndex);
                             if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundImageIdentifier() != null) {
                                 imageView.setBackground(getBackgroundDatasource().gainBackground(this, lastBackgroundDrawingStep.getDrawingLayer().getBackgroundImageIdentifier()));
-                            }
-                            else if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
+                            } else if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
                                 imageView.setBackgroundColor(lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor());
                             }
                         }
@@ -1641,8 +1631,7 @@ public class DrawingView extends RelativeLayout implements View.OnLayoutChangeLi
                             DrawingStep lastBackgroundDrawingStep = currentLayerSteps.get(lastBackgroundStepIndex);
                             if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundImageIdentifier() != null) {
                                 textView.setBackground(getBackgroundDatasource().gainBackground(this, lastBackgroundDrawingStep.getDrawingLayer().getBackgroundImageIdentifier()));
-                            }
-                            else if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
+                            } else if (lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor() != DrawingLayer.UnsetValue) {
                                 textView.setBackgroundColor(lastBackgroundDrawingStep.getDrawingLayer().getBackgroundColor());
                             }
                         }

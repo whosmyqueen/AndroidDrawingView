@@ -9,13 +9,14 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.unitconversion.DimenConverter;
 
@@ -43,9 +44,9 @@ public abstract class BasePopupController extends BaseController {
     public BasePopupController(Context context) {
         super(context);
     }
-    
-    /* #Overrides */    
-    
+
+    /* #Overrides */
+
     /* #Accessors */
     public <T extends Delegate> T getDelegate() {
         return (T) delegate;
@@ -120,9 +121,9 @@ public abstract class BasePopupController extends BaseController {
     }
 
     /* #Delegates */
-     
-    /* #Private Methods */    
-    
+
+    /* #Private Methods */
+
     /* #Public Methods */
     public void popupFromView(@NonNull View v, @NonNull PopupDirection popupDirection, boolean withArrow, int offsetX, int offsetY) {
         if (self.getPopupWindow().isShowing()) {
@@ -148,8 +149,7 @@ public abstract class BasePopupController extends BaseController {
                     popupHeight += PopupBackgroundView.ArrowRadius;
                     break;
             }
-        }
-        else {
+        } else {
             self.getPopupBackgroundView().setArrowDirection(PopupDirection.None);
         }
 
@@ -223,7 +223,7 @@ public abstract class BasePopupController extends BaseController {
         public PopupBackgroundView(Context context, AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
 
-            int[] attrsArray = new int[] {
+            int[] attrsArray = new int[]{
                     android.R.attr.background,
             };
 
@@ -234,8 +234,7 @@ public abstract class BasePopupController extends BaseController {
                 if (background instanceof ColorDrawable) {
                     self.backgroundColor = ((ColorDrawable) background).getColor();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -276,12 +275,12 @@ public abstract class BasePopupController extends BaseController {
                     break;
             }
 
-//        float width = right - left;
-//        float height = baseLineBottom - top;
-//        double atan = Math.atan(width / height);
-//        double aa = Math.sqrt(2);
-//        double bb = (2 - aa) * Math.PI / 4;
-//        int roundRectRadius = (int) (Math.sqrt(width + height) * Math.sin(aa * atan + bb));
+            //        float width = right - left;
+            //        float height = baseLineBottom - top;
+            //        double atan = Math.atan(width / height);
+            //        double aa = Math.sqrt(2);
+            //        double bb = (2 - aa) * Math.PI / 4;
+            //        int roundRectRadius = (int) (Math.sqrt(width + height) * Math.sin(aa * atan + bb));
 
             RectF arcRect = new RectF(0, 0, self.roundedRadius * 2, self.roundedRadius * 2);
 
@@ -330,7 +329,7 @@ public abstract class BasePopupController extends BaseController {
             backgroundPaint.setDither(true);
             backgroundPaint.setStyle(Paint.Style.FILL);
             backgroundPaint.setColor(self.backgroundColor);
-                backgroundPaint.setShadowLayer(ShadowRadius, 0, 0, Color.DKGRAY);
+            backgroundPaint.setShadowLayer(ShadowRadius, 0, 0, Color.DKGRAY);
 
             canvas.drawPath(path, backgroundPaint);
         }
@@ -414,9 +413,9 @@ public abstract class BasePopupController extends BaseController {
     public interface Delegate {
         void popupWindowDidDismiss(BasePopupController controller);
     }
-     
-    /* #Annotations @interface */    
-    
+
+    /* #Annotations @interface */
+
     /* #Enums */
     public enum PopupDirection {
         None, Left, Up, Right, Down;

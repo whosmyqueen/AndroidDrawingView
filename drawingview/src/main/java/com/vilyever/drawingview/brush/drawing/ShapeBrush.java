@@ -3,7 +3,8 @@ package com.vilyever.drawingview.brush.drawing;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.model.DrawingPath;
 import com.vilyever.drawingview.model.DrawingPoint;
@@ -14,7 +15,7 @@ import com.vilyever.drawingview.model.DrawingPoint;
  * Created by vilyever on 2015/10/21.
  * Feature:
  * 形状绘制brush
- *
+ * <p>
  * Known Direct Subclasses:
  * {@link LineBrush}
  * {@link RectangleBrush}
@@ -50,6 +51,7 @@ public abstract class ShapeBrush extends DrawingBrush {
     }
 
     /* Properties */
+
     /**
      * 填充样式
      * 镂空，铺满
@@ -57,8 +59,10 @@ public abstract class ShapeBrush extends DrawingBrush {
     public enum FillType {
         Hollow, Solid;
     }
+
     @JsonKey("FT")
     protected FillType fillType;
+
     public FillType getFillType() {
         if (isEraser()) {
             return FillType.Solid;
@@ -69,6 +73,7 @@ public abstract class ShapeBrush extends DrawingBrush {
         }
         return this.fillType;
     }
+
     public <T extends ShapeBrush> T setFillType(FillType fillType) {
         this.fillType = fillType;
         updatePaint();
@@ -80,9 +85,11 @@ public abstract class ShapeBrush extends DrawingBrush {
      */
     @JsonKey("ER")
     protected boolean edgeRounded;
+
     public boolean isEdgeRounded() {
         return this.edgeRounded;
     }
+
     public <T extends ShapeBrush> T setEdgeRounded(boolean edgeRounded) {
         this.edgeRounded = edgeRounded;
         updatePaint();
@@ -106,8 +113,7 @@ public abstract class ShapeBrush extends DrawingBrush {
         if (isEdgeRounded()) {
             getPaint().setStrokeCap(Paint.Cap.ROUND);
             getPaint().setStrokeJoin(Paint.Join.ROUND);
-        }
-        else {
+        } else {
             getPaint().setStrokeCap(Paint.Cap.SQUARE);
             getPaint().setStrokeJoin(Paint.Join.MITER);
         }
@@ -119,8 +125,7 @@ public abstract class ShapeBrush extends DrawingBrush {
         updatePaint();
         if (drawingPath.getPoints().size() < 2) {
             return Frame.EmptyFrame();
-        }
-        else {
+        } else {
             DrawingPoint beginPoint = drawingPath.getPoints().get(0);
             DrawingPoint lastPoint = drawingPath.getPoints().get(drawingPath.getPoints().size() - 1);
 

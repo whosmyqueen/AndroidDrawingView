@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.vilyever.drawingview.R;
 import com.vilyever.drawingview.brush.Brush;
@@ -38,8 +39,10 @@ public class TextBrush extends Brush {
     }
 
     /* Public Methods */
+
     /**
      * 默认brush
+     *
      * @return 默认brush
      */
     public static TextBrush defaultBrush() {
@@ -52,9 +55,11 @@ public class TextBrush extends Brush {
      */
     @JsonKey("S")
     protected float size;
+
     public float getSize() {
         return this.size * getDrawingRatio();
     }
+
     public <T extends TextBrush> T setSize(float size) {
         this.size = size;
         return (T) this;
@@ -65,9 +70,11 @@ public class TextBrush extends Brush {
      */
     @JsonKey("C")
     protected int color;
+
     public int getColor() {
         return this.color;
     }
+
     public <T extends TextBrush> T setColor(int color) {
         this.color = color;
         return (T) this;
@@ -77,18 +84,25 @@ public class TextBrush extends Brush {
      * 字体样式
      */
     @JsonKey("TS")
-    protected int typefaceStyle; /** {@link Typeface#NORMAL} {@link Typeface#BOLD} {@link Typeface#ITALIC} {@link Typeface#BOLD_ITALIC} or any created Typeface */
+    protected int typefaceStyle;
+
+    /**
+     * {@link Typeface#NORMAL} {@link Typeface#BOLD} {@link Typeface#ITALIC} {@link Typeface#BOLD_ITALIC} or any created Typeface
+     */
     public int getTypefaceStyle() {
         return this.typefaceStyle;
     }
+
     public <T extends TextBrush> T setTypefaceStyle(int typefaceStyle) {
         this.typefaceStyle = typefaceStyle;
         return (T) this;
     }
 
     /* Overrides */
+
     /**
      * 定位text图层位置
+     *
      * @return 图层位置
      */
     @NonNull
